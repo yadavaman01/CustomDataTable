@@ -2,8 +2,11 @@ import type { CSSProperties } from "react";
 import type { CustomDataTableTheme } from "./types";
 
 /**
- * Matches TaskSummaryModal's original look (gray-100 header, gray-300 border,
- * blue-50 selected row, navColor accent) so it's a drop-in visual default.
+ * A self-contained, neutral gray/blue default — every value here is a
+ * concrete color, not a CSS variable this package expects the host app to
+ * define, so the table looks correct out of the box for any consumer.
+ * Override any subset via the `theme` prop (e.g. to match a brand accent
+ * color) without needing to touch the rest.
  */
 export const defaultCustomDataTableTheme: CustomDataTableTheme = {
   headerBg: "#F3F4F6",
@@ -14,7 +17,7 @@ export const defaultCustomDataTableTheme: CustomDataTableTheme = {
   rowBorderColor: "#E5E7EB",
   rowHoverBg: "#F9FAFB",
   selectedRowBg: "#EFF6FF",
-  accentColor: "hsl(var(--nav-color))",
+  accentColor: "#2563EB",
   expandIconColor: "#6B7280",
   emptyStateText: "#6B7280",
   radius: "0.75rem",

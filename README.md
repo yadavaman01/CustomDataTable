@@ -63,43 +63,28 @@ you also use them directly elsewhere in your app.
 
 ## Requirements / mandatory setup
 
-These two things are **not optional** — skipping either will make the table
-look broken:
+This is **not optional** — skipping it will make the table look broken:
 
-1. **Tailwind must be able to see this package's compiled class names.**
-   The table's own styling is a small set of Tailwind utility classes
-   compiled into `dist/`. If your app uses Tailwind, extend its `content`
-   glob so those classes aren't purged:
+**Tailwind must be able to see this package's compiled class names.** The
+table's own styling is a small set of Tailwind utility classes compiled into
+`dist/`. If your app uses Tailwind, extend its `content` glob so those
+classes aren't purged:
 
-   ```js
-   // tailwind.config.js
-   content: [
-     // ...your existing entries
-     "./node_modules/custom-data-table/dist/**/*.{js,mjs}",
-   ],
-   ```
+```js
+// tailwind.config.js
+content: [
+  // ...your existing entries
+  "./node_modules/custom-data-table/dist/**/*.{js,mjs}",
+],
+```
 
-   If your app does **not** use Tailwind at all, the table still renders —
-   but only the classes present in `dist/` at build time exist as CSS
-   nowhere, so nothing will be styled. This package assumes a Tailwind host
-   app.
+If your app does **not** use Tailwind at all, the table still renders — but
+only the classes present in `dist/` at build time exist as CSS nowhere, so
+nothing will be styled. This package assumes a Tailwind host app.
 
-2. **Pass an explicit `accentColor`, or expect it to be invisible.** The
-   default theme's `accentColor` is `"hsl(var(--nav-color))"` — a CSS
-   variable that is **not defined by this package**. It was carried over
-   from the app this component was extracted from. Unless your own app
-   happens to define a global `--nav-color` custom property, the checkbox
-   tint and the active-page pagination pill will render with **no visible
-   color** (technically present, but effectively invisible — white text on
-   a transparent background). Always pass a real `theme.accentColor` unless
-   you specifically know `--nav-color` is defined somewhere in your app:
-
-   ```tsx
-   <CustomDataTable
-     theme={{ accentColor: "#2563EB" }}
-     // ...
-   />
-   ```
+Everything else (colors, radius, etc.) ships with sensible concrete
+defaults — see [Theming](#theming) if you want to customize them, but there's
+nothing else you *have* to configure.
 
 ## Quick start
 
@@ -131,7 +116,6 @@ export default function App() {
       idName="id"
       columns={columns}
       data={data}
-      theme={{ accentColor: "#2563EB" }}
       selectable
       selectedIds={selectedIds}
       onSelectionChange={(rows) => setSelectedIds(rows.map((r) => r.id))}
@@ -239,14 +223,10 @@ back to the default:
 | `rowBorderColor` | `#E5E7EB` | Row divider lines |
 | `rowHoverBg` | `#F9FAFB` | Row hover background |
 | `selectedRowBg` | `#EFF6FF` | Selected row background |
-| `accentColor` | `hsl(var(--nav-color))`* | Checkbox tint, active pagination page, focus rings, drag-reorder outline |
+| `accentColor` | `#2563EB` | Checkbox tint, active pagination page, focus rings, drag-reorder outline |
 | `expandIconColor` | `#6B7280` | Expand chevron / drag-handle icon color |
 | `emptyStateText` | `#6B7280` | Empty-state and heading description text |
 | `radius` | `0.75rem` | Outer table corner radius |
-
-\* See the [mandatory setup note](#requirements--mandatory-setup) above —
-this default assumes a CSS variable this package does not itself define.
-Passing a real `accentColor` is strongly recommended.
 
 Falsy overrides (e.g. accidentally passing `""`) are ignored and fall back to
 the default rather than breaking the corresponding CSS variable.
