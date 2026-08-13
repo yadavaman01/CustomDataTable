@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Demo-only default for the table's accent CSS var; consuming apps set
+   their own via the `theme` prop or by defining --nav-color themselves. */
+:root {
+  --nav-color: 211, 66%, 21%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+}
