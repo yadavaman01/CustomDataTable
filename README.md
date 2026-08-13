@@ -46,7 +46,7 @@ now developed and versioned independently.
 ## Installation
 
 ```bash
-npm install custom-data-table
+npm install @yadavaman01/custom-data-table
 ```
 
 `react` and `react-dom` are **peer dependencies** — install them yourself if
@@ -74,7 +74,7 @@ classes aren't purged:
 // tailwind.config.js
 content: [
   // ...your existing entries
-  "./node_modules/custom-data-table/dist/**/*.{js,mjs}",
+  "./node_modules/@yadavaman01/custom-data-table/dist/**/*.{js,mjs}",
 ],
 ```
 
@@ -90,7 +90,7 @@ nothing else you *have* to configure.
 
 ```tsx
 import { useState } from "react";
-import { CustomDataTable, type ColumnDef } from "custom-data-table";
+import { CustomDataTable, type ColumnDef } from "@yadavaman01/custom-data-table";
 
 interface Person {
   id: number;
@@ -372,7 +372,7 @@ expand columns are excluded and always stay in place.
 
 ```tsx
 import { useRef } from "react";
-import { CustomDataTable, type CustomDataTableHandle } from "custom-data-table";
+import { CustomDataTable, type CustomDataTableHandle } from "@yadavaman01/custom-data-table";
 
 const tableRef = useRef<CustomDataTableHandle>(null);
 
@@ -439,13 +439,14 @@ Steps to publish a new version:
    publishing, so `dist/` is always freshly built — you can't accidentally
    publish stale output.
 
-5. **Verify**: check `https://www.npmjs.com/package/custom-data-table` and/or
-   run `npm view custom-data-table` to confirm the new version is live.
+5. **Verify**: check `https://www.npmjs.com/package/@yadavaman01/custom-data-table`
+   and/or run `npm view @yadavaman01/custom-data-table` to confirm the new
+   version is live.
 
 A consumer then installs it the normal way:
 
 ```bash
-npm install custom-data-table
+npm install @yadavaman01/custom-data-table
 ```
 
 ## License

@@ -1,7 +1,10 @@
 {
-  "name": "custom-data-table",
+  "name": "@yadavaman01/custom-data-table",
   "private": false,
   "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "description": "Standalone themeable data table built on @tanstack/react-table (selection, expansion, sorting, pagination).",
   "keywords": [
