@@ -22,6 +22,7 @@ now developed and versioned independently.
 - [Row expansion](#row-expansion)
 - [Sorting](#sorting)
 - [Pagination](#pagination)
+- [Using with a real API](#using-with-a-real-api)
 - [Column reordering](#column-reordering)
 - [Table heading](#table-heading)
 - [Empty / not-found state](#empty--not-found-state)
@@ -328,6 +329,73 @@ const [pageSize, setPageSize] = useState(10);
   // ...
 />
 ```
+
+## Using with a real API
+
+The table never owns data or fetching — it only reports user intent (page
+changed, sort changed) via callbacks. You own the fetch and feed the
+response straight back in. This is the full loop, combining
+[Sorting](#sorting) and [Pagination](#pagination) with a live endpoint:
+
+```tsx
+// 1. Type the API response shape
+interface ApiResponse<T> {
+  IsSuccess: boolean;
+  Data: {
+    items: T[];
+    meta: { totalItems: number; currentPage: number; totalPages: number };
+  };
+}
+
+function PeopleTable() {
+  // 2. State for what the table needs to report back
+  const [data, setData] = useState<Person[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [sort, setSort] = useState<OnSortParam>({ key: "", order: "" });
+  const [total, setTotal] = useState(0);
+
+  // 3. Fetch whenever page/pageSize/sort changes
+  useEffect(() => {
+    setLoading(true);
+    fetch(
+      `/api/people?page=${pageIndex}&pageSize=${pageSize}&sortKey=${sort.key}&sortOrder=${sort.order}`
+    )
+      .then((res) => res.json())
+      .then((json: ApiResponse<Person>) => {
+        setData(json.Data.items); // API response items go straight into `data`
+        setTotal(json.Data.meta.totalItems);
+      })
+      .finally(() => setLoading(false));
+  }, [pageIndex, pageSize, sort]);
+
+  // 4. Wire it all in — every prop here just hands the table's reported
+  // intent back into step 3's state
+  return (
+    <CustomDataTable<Person>
+      idName="id"
+      columns={columns}
+      data={data}
+      loading={loading}
+      onSort={setSort}
+      pagination
+      pagingData={{ total, pageIndex, pageSize }}
+      onPaginationChange={setPageIndex}
+      onPageSizeChange={(size) => {
+        setPageSize(size);
+        setPageIndex(1);
+      }}
+    />
+  );
+}
+```
+
+The loop: table fires `onSort`/`onPaginationChange` → your state changes →
+`useEffect` refetches → the response repopulates `data`/`total` → the table
+re-renders with the new page. Selection, expansion, theming, etc. all layer
+on top of this same pattern independently — see their respective sections
+above.
 
 ## Column reordering
 
